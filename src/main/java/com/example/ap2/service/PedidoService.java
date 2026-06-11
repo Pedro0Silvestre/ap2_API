@@ -27,7 +27,7 @@ public class PedidoService {
     public void cadastrar(Pedido pedido) {
         //garantir que o cliente esteja associado ao pedido
         if(pedido.getCliente() == null) {
-            throw new IllegalArgumentException("pedido prec isa de cliente associado");
+            throw new IllegalArgumentException("pedido precisa de cliente associado");
         }
         //garantir que o cliente esteja no banco
         Cliente cliente = clienteRepository.readById(pedido.getCliente().getId());

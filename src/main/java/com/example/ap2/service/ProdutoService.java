@@ -4,6 +4,7 @@ import com.example.ap2.model.Produto;
 import com.example.ap2.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -21,8 +22,8 @@ public class ProdutoService {
             throw new IllegalArgumentException("nome e um campo obrigatorio");
         }
 
-        if (produto.getPreco() <= 0) {
-            throw new IllegalArgumentException("precos devem ser maiores que zero");
+        if (produto.getPreco() == null || produto.getPreco().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("precos e obrigatorio e deve ser maior que zero");
         }
 
         produtoRepository.create(produto);
@@ -43,10 +44,25 @@ public class ProdutoService {
     }
 
     public void atualizar(Long id, Produto produtoAtualizado) {
-        //verificar se produto esta cadastrado Fail fast
-        this.buscarPorId(id);
+        //failfast
+        Produto produtoSalvoNoBanco = this.buscarPorId(id);
+        Produto produtoFinal = new Produto();
+        produtoFinal.setId(id);
 
-        int linhasAfetadas = produtoRepository.updateById(id,produtoAtualizado);
+        if(produtoAtualizado.getNome() != null && !produtoAtualizado.getNome().trim().isEmpty()){
+            produtoFinal.setNome(produtoAtualizado.getNome());
+        } else{
+            produtoFinal.setNome(produtoSalvoNoBanco.getNome());
+        }
+
+        if(produtoAtualizado.getPreco() != null){
+            produtoFinal.setPreco(produtoAtualizado.getPreco());
+        } else{
+            produtoFinal.setPreco(produtoSalvoNoBanco.getPreco());
+        }
+
+
+        int linhasAfetadas = produtoRepository.updateById(id,produtoFinal);
         if(linhasAfetadas == 0) {
             throw new RuntimeException("Nao foi possivel atualizar o produto");
         }

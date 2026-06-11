@@ -45,7 +45,7 @@ public class ProdutoController {
     // 3. ROTA PARA BUSCAR POR ID (GET BY ID)
     @GetMapping("/{id}")
     @Operation(summary = "Buscar produto por ID", description = "Retorna os dados de um produto específico informando o ID")
-    public ResponseEntity<?> buscarPorId(@PathVariable int id) {
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         try {
             Produto produto = produtoService.buscarPorId(id);
             return ResponseEntity.ok(produto);
@@ -57,7 +57,7 @@ public class ProdutoController {
     // 4. ROTA PARA ATUALIZAR (PUT)
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar um produto", description = "Permite atualização total ou parcial (mesclagem inteligente via Service)")
-    public ResponseEntity<String> atualizar(@PathVariable int id, @RequestBody Produto produto) {
+    public ResponseEntity<String> atualizar(@PathVariable Long id, @RequestBody Produto produto) {
         try {
             produtoService.atualizar(id, produto);
             return ResponseEntity.ok("Produto atualizado com sucesso!");
@@ -71,7 +71,7 @@ public class ProdutoController {
     // 5. ROTA PARA EXCLUIR (DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "Deletar um produto", description = "Remove o produto do catálogo do banco de dados")
-    public ResponseEntity<String> excluir(@PathVariable int id) {
+    public ResponseEntity<String> excluir(@PathVariable Long id) {
         try {
             produtoService.excluir(id);
             return ResponseEntity.ok("Produto removido com sucesso!");

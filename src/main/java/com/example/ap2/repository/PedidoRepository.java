@@ -79,7 +79,7 @@ public class PedidoRepository {
                 Produto prod = new Produto(
                         rsProd.getLong("id"),
                         rsProd.getString("nome"),
-                        rsProd.getDouble("preco")
+                        rsProd.getBigDecimal("preco")
                 );
                 return prod;
             }, pedido.getId());

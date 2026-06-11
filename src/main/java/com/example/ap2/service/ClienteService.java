@@ -53,12 +53,29 @@ public class ClienteService {
     }
 
     public void atualizar(Long id, Cliente clienteAtualizado) {
-        //verificar se cliente esta no banco
-        this.buscarPorId(id);
 
-        int linhasAfetadas = clienteRepository.updateById(id, clienteAtualizado);
+        //busca cliente atual para caso de campos nao enviados e validar existencia
+        Cliente clienteSalvoNoBanco = this.buscarPorId(id);
+
+        Cliente clienteFinal = new Cliente();
+        clienteFinal.setId(id);
+
+        //verificar campos enviados de nome para atualizar
+        if(clienteAtualizado.getNome() != null && !clienteAtualizado.getNome().trim().isEmpty()) {
+            clienteFinal.setNome(clienteAtualizado.getNome());
+        } else {
+            clienteFinal.setNome(clienteSalvoNoBanco.getNome());
+        }
+        //verificacao de email
+        if (clienteAtualizado.getEmail() != null && !clienteAtualizado.getEmail().trim().isEmpty()) {
+            clienteFinal.setEmail(clienteAtualizado.getEmail());
+        } else {
+            clienteFinal.setEmail(clienteSalvoNoBanco.getEmail());
+        }
+
+        int linhasAfetadas = clienteRepository.updateById(id, clienteFinal);
         if (linhasAfetadas == 0) {
-            throw new RuntimeException("Nao foi possivel atualizar clinete");
+            throw new RuntimeException("Nao foi possivel atualizar cliente");
         }
     }
 

@@ -19,7 +19,7 @@ public class ProdutoRepository {
     }
 
     public int create(Produto produto) {
-        String query = "INSERT INTO prduto(nome,preco) VALUES(?,?)";
+        String query = "INSERT INTO produto(nome,preco) VALUES(?,?)";
         return jdbcTemplate.update(query, produto.getNome(), produto.getPreco());
     }
 
@@ -31,7 +31,7 @@ public class ProdutoRepository {
 
     // read by id
     public Produto readById(Long id) {
-        String query = "SELECT & FROM produto WHERE id = ?";
+        String query = "SELECT * FROM produto WHERE id = ?";
         try {
             return jdbcTemplate.queryForObject(query, new ProdutoRowMapper(), id);
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class ProdutoRepository {
 
             produto.setId(rs.getLong("id"));
             produto.setNome(rs.getString("nome"));
-            produto.setPreco(rs.getDouble("preco"));
+            produto.setPreco(rs.getBigDecimal("preco"));
 
             return produto;
         }

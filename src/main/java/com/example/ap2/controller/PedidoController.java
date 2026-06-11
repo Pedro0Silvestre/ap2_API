@@ -47,7 +47,7 @@ public class PedidoController {
     // 3. ROTA PARA ATUALIZAR APENAS O STATUS DO PEDIDO (PUT)
     @PutMapping("/{id}/status")
     @Operation(summary = "Atualizar o status de um pedido", description = "Altera o status do pedido informando o ID na URL e o novo status no corpo (Ex: PAGO, ENVIADO, CANCELADO)")
-    public ResponseEntity<String> atualizarStatus(@PathVariable int id, @RequestBody String novoStatus) {
+    public ResponseEntity<String> atualizarStatus(@PathVariable Long id, @RequestBody String novoStatus) {
         try {
             pedidoService.atualizarStatus(id, novoStatus);
             return ResponseEntity.ok("Status do pedido atualizado com sucesso!");
@@ -61,7 +61,7 @@ public class PedidoController {
     // 4. ROTA PARA EXCLUIR UM PEDIDO (DELETE)
     @DeleteMapping("/{id}")
     @Operation(summary = "Excluir um pedido por ID", description = "Remove o pedido e limpa seus vínculos na tabela associativa item_pedido")
-    public ResponseEntity<String> excluir(@PathVariable int id) {
+    public ResponseEntity<String> excluir(@PathVariable Long id) {
         try {
             pedidoService.excluir(id);
             return ResponseEntity.ok("Pedido excluído com sucesso!");
